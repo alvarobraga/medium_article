@@ -9,8 +9,10 @@ number_of_cycles = 5  # Number of cycles to be plotted
 span_in_seconds = number_of_cycles * T
 t = np.linspace(0, span_in_seconds, 10000)
 sine_wave = np.sin(2*np.pi*f*t)
+myRange = [i for i in range(50, 1050, 100)]
+myRange[1] = 100
 
-for i in range(50, 4250, 250):
+for i in myRange:
     fs = i
     # Calculate number of samples based on the number of cycles
     number_of_samples = int(number_of_cycles * fs/f)
