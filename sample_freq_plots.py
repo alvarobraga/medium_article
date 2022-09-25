@@ -13,7 +13,7 @@ sine_wave = np.sin(2*np.pi*f*t)
 for i in range(50, 4250, 250):
     fs = i
     # Calculate number of samples based on the number of cycles
-    number_of_samples = int(fs/f)
+    number_of_samples = int(number_of_cycles * fs/f)
     n = np.linspace(0, span_in_seconds, number_of_samples)
     samples = np.sin(2*np.pi*f*n)
     plt.figure(figsize=(8, 8))
