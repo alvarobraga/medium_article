@@ -1,3 +1,5 @@
+'''Code to generate plots in Fig. 4'''
+
 from matplotlib import pyplot as plt
 import numpy as np
 
