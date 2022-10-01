@@ -15,7 +15,7 @@ freqs = fftfreq(sampling_size, 1/sampling_size)
 idx = np.where(freqs > 0)
 b = 2 * xf[idx]
 positive_freqs_no_DC = freqs[idx]
-# Without the DC component, the fundamental components has the greatest amplitude
+# Without the DC component, the fundamental component has the highest amplitude
 amplitude_50Hz_component = np.abs(b[np.argmax(np.abs(b))])
 # Normalise amplitudes
 normalised = 20*np.log10(np.abs(b)/amplitude_50Hz_component)
