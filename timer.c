@@ -3,6 +3,8 @@
 #define EN (1U << 0)  // Reference Manual page 118 - Mask to enable clock to Timer 2
 #define CEN (1U << 0) // Reference Manual page 287 - Mask to enable Timer 2
 
+#define SAMPLING_SIZE 2000
+
 /*Timer Interruption*/
 #define UIE (1U << 0) /* Reference Manul page 293 - Mask to read Update Interrupt (UIE) of \
 								the TIM2_DIER (Interrupt Enable Register)*/

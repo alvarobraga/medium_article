@@ -11,10 +11,7 @@
 typedef struct
 {
     uint32_t samples[SAMPLING_SIZE]; // Array that will receive ADC conversion via DMA
-    uint32_t dummy[1];               /* Inserts a 4-byte separation between samples[1000] and variance
-                                        to avoid overlapping*/
-    float variance;                  // Receives the value of the variance
-    uint32_t dummy2[1];
+    float rms_squared;               // Receives the value of the rms_squared
 } Data_t;
 
 #define Data ((Data_t *)DATA) // Declare struct with initial address at 0x20000000
