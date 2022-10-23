@@ -1,3 +1,5 @@
+;Changes: lines 15, 26, 81-82, 97-98, 110-111
+
 NUM_SAMPLES EQU 2000
 
         PRESERVE8
@@ -9,6 +11,7 @@ Filter
 		PUSH	{R1}
 		PUSH	{R0}
 		PUSH    {R2}
+		PUSH    {R3}
 		
         ;Enable FPU
 		LDR		R2,=0xE000ED88
@@ -18,6 +21,8 @@ Filter
 		
 		DSB
 		ISB
+		
+		POP     {R4}
 		
 		ADRL           R6,Coefficients   ;Load the address of Coefficients into R6
 		POP            {R2}              ;Retrieve the address of Data->gain
@@ -52,16 +57,16 @@ LOOP
 		VSUB.F32       S0,S0,S7          ;Take offset from each sample
 		VMOV.F32       S9,S0             ;Save x[n] into S9      
 		VLDR.F32       S1,[R6]           ;Load coefficient a0 into auxiliary register S1
-        VMUL.F32       S1,S1,S8          ;********************************************************		
+        VMUL.F32       S1,S1,S8          ;Apply gain	
 		VMUL.F32       S0,S0,S1          ;a0*x[n]		
 		CMP            R3,#1	         ;Check if the loop is at its first iteration			
         BLO            LOOP_ZERO         ;If loop counter less than 1, jump to tag LOOP_ZERO (i.e. n=0, so any element [n-1] or [n-2] are zero). Continue otherwise		
 		VLDRHS.F32     S1,[R6,#4]        ;Load coefficient a1 into auxiliary register S1
-        VMUL.F32       S1,S1,S8          ;********************************************************		
+        VMUL.F32       S1,S1,S8          ;Apply gain		
 		VMULHS.F32     S1,S2,S1          ;a1*x[n-1]
 		VADDHS.F32     S0,S0,S1          ;a0*x[n] + a1*x[n-1]
 		VLDRHS.F32     S1,[R6,#8]        ;Load coefficient a2 into auxiliary register S1
-		VMUL.F32       S1,S1,S8          ;********************************************************
+		VMUL.F32       S1,S1,S8          ;Apply gain
 		VMULHS.F32     S1,S3,S1          ;a2*x[n-2]
 		VADDHS.F32     S0,S0,S1          ;a0*x[n] + a1*x[n-1] + a2*x[n-2]
 		VLDRHS.F32     S6,[R6,#12]       ;Load coefficient b1 into auxiliary register S6
@@ -71,8 +76,9 @@ LOOP
 		VLDRHS.F32     S6,[R6,#16]       ;Load coefficient b2 into auxiliary register S6
 		VMULHS.F32     S1,S12,S6         ;b2*y[n-2]
 		VADDHS.F32     S0,S0,S1          ;a0*x[n] + a1*x[n-1] + a2*x[n-2] + b1*y[n-1] + b2*y[n-2]
-		;;;;;;;;VMUL.F32       S0,S0,S8  ;********************************************************
-		VPUSH.F32      {S0}              ;Save y[n] into stack		
+		VPUSH.F32      {S0}              ;Save y[n] into stack	
+		VSTR.F32       S0,[R4]           ;Store filtered value
+		ADD            R4,R4,#4          ;Increment pointer
 		VMOV.F32       S12,S11           ;y[n-1] becomems y[n-2]
 		VMOV.F32       S11,S0            ;y[n] becomes y[n-1]
 		ADDHS		   R3,R3,#1          ;Increment loop counter		
@@ -86,8 +92,9 @@ LOOP
 		BEQ            RMS_SQUARED
 		
 LOOP_ONE		
-		;VMUL.F32       S0,S0,S8         ;********************************************************
 		VPUSH.F32      {S0}		         ;Save y[n] into stack	
+        VSTR.F32       S0,[R4]           ;Store filtered value
+        ADD            R4,R4,#4		     ;Increment pointer
 		VMOV.F32       S12,S11           ;y[n-1] becomems y[n-2]
 		VMOV.F32       S11,S0            ;y[n] becomes y[n-1]
 		ADD		       R3,R3,#1          ;Increment loop counter
@@ -98,8 +105,9 @@ LOOP_ONE
 		
 		
 LOOP_ZERO
-		;VMUL.F32      S0,S0,S8          ;********************************************************
-		VPUSH.F32     {S0}               ;Save y[n] into stack		
+		VPUSH.F32     {S0}               ;Save y[n] into stack
+        VSTR.F32      S0,[R4]            ;Store filtered value
+        ADD           R4,R4,#4		     ;Increment pointer
 		VMOV.F32      S11,S0             ;y[n] becomes y[n-1]
 		VMOV.F32      S2,S9              ;x[n] becomes x[n-1]
 		ADD		      R3,R3,#1           ;Increment loop counter
@@ -109,19 +117,19 @@ LOOP_ZERO
 
 RMS_SQUARED
 		CMP           R3,R1	             ;Now we will start a loop by decrementing the counter. Therefore we start by checking if the counter is (NUM_SAMPLES - 1)	
-		BNE			  NOT_FIRST_LOOP
+		BNE			  NOT_FIRST_LOOP_RMS_SQUARED
 		VPOPEQ.F32    {S0}               ;Retrive y[loop counter] from stack
 		VMULEQ.F32    S0,S0,S0           ;(y[(NUM_SAMPLES - 1))^2
 		SUBEQ		  R3,R3,#1           ;Decrement loop counter
 		B             RMS_SQUARED
 		
-NOT_FIRST_LOOP
+NOT_FIRST_LOOP_RMS_SQUARED
 		VPOP.F32    {S1}                 ;Retrive y[loop counter] from stack
 		VMUL.F32    S1,S1,S1             ;y[(loop counter)])^2	
 		VADD.F32    S0,S0,S1             ;(y[(NUM_SAMPLES - 1))^2 + y[(NUM_SAMPLES - 2)])^2 + ... + y[(loop counter)])^2		
 		SUB		    R3,R3,#1             ;Decrement loop counter
 		CMP         R3,#-1	             ;Check if loop counter is -1
-		BGT         NOT_FIRST_LOOP
+		BGT         NOT_FIRST_LOOP_RMS_SQUARED
         VLDREQ.F32  S1,[R6,#20]	         ;Load constant N (inverse of number of samples) into register S1
 		VMULEQ.F32  S0,S0,S1             ;SUM( (y[n])^2 ) * 1/N --- rms_squared
 		POPEQ       {R1}                 ;Retrive address of the variable rms_squared from the stack
