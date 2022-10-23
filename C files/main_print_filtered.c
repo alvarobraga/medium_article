@@ -1,3 +1,11 @@
+/*
+Author: Alvaro Braga
+email: alvaro.braga3@gmail.com
+main_print_filtered.c: Print onto
+              console the filtered
+              signal values
+*/
+
 // Changes: lines 20, 32, 63, 53
 
 #include <stdlib.h>

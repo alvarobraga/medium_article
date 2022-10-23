@@ -1,7 +1,15 @@
+'''
+Author: Alvaro Braga
+email: alvaro.braga3@gmail.com
+Figure 12.py: Plot filter response, in the 
+              time domain, for 3 different
+              frequencies
+'''
+
 from matplotlib import pyplot as plt
 import numpy as np
 
-'''Filter coefficients'''
+# Filter coefficients
 a0 = .0251
 a1 = .0502
 a2 = .0251

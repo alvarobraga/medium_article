@@ -1,3 +1,7 @@
+;Author: Alvaro Braga
+;email: alvaro.braga3@gmail.com
+;relocate_stack2.s: Relocate stack pointer
+
 ;Changes: line 9
 
 		AREA |.text|,CODE,READONLY

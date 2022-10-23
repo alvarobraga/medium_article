@@ -1,3 +1,8 @@
+;Author: Alvaro Braga
+;email: alvaro.braga3@gmail.com
+;Filter.s: Implement Eq. 8 to filter
+;          the signal
+
 NUM_SAMPLES EQU 2000
 
         PRESERVE8

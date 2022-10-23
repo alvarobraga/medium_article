@@ -1,3 +1,10 @@
+'''
+Author: Alvaro Braga
+email: alvaro.braga3@gmail.com
+Figure 11.py: Plot phasor diagram of the transfer
+              function for multiple frequencies
+'''
+
 from matplotlib import pyplot as plt
 from matplotlib import patches
 import numpy as np

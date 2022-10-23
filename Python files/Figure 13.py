@@ -1,4 +1,9 @@
-'''Code to plot raw signal in the frequency domain'''
+'''
+Author: Alvaro Braga
+email: alvaro.braga3@gmail.com
+Figure 12.py: Plot current sensor output
+              signal filtered in the frequency domain
+'''
 
 import numpy as np
 from matplotlib import pyplot as plt
@@ -21,7 +26,7 @@ b1 /= b0
 b2 /= b0
 
 '''Signal not filtered'''
-x = np.loadtxt("./raw_conversion_result.txt", dtype='int')
+x = np.loadtxt("../Dataset/raw_conversion_values.txt", dtype='int')
 
 offset = np.mean(x)
 for i in range(x.shape[0]):

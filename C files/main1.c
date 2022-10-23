@@ -1,3 +1,11 @@
+/*
+Author: Alvaro Braga
+email: alvaro.braga3@gmail.com
+main1.c: Print on the console the
+         values from the ADC. No filter
+         is applied
+*/
+
 #include <stdlib.h>
 #include <stdint.h>
 #include "stm32f4xx.h"

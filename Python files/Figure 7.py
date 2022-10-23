@@ -1,4 +1,9 @@
-'''Code to plot raw signal in the frequency domain'''
+'''
+Author: Alvaro Braga
+email: alvaro.braga3@gmail.com
+Figure 07.py: Plot of the raw signal
+              in the frequency domain
+'''
 
 import numpy as np
 from matplotlib import pyplot as plt
@@ -6,7 +11,7 @@ from scipy.fft import fft, fftfreq
 
 sampling_size = 2000
 
-x = np.loadtxt("./raw_conversion_result.txt", dtype='int')
+x = np.loadtxt("../Dataset/raw_conversion_values.txt", dtype='int')
 
 '''Remove Offset'''
 offset = np.mean(x)

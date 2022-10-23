@@ -1,3 +1,9 @@
+;Author: Alvaro Braga
+;email: alvaro.braga3@gmail.com
+;Filter2.s: Implement Eq. 8 to filter
+;          the signal and store filtered
+;          values
+
 ;Changes: lines 15, 26, 81-82, 97-98, 110-111
 
 NUM_SAMPLES EQU 2000

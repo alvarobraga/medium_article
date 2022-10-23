@@ -1,4 +1,9 @@
-'''Code to generate plots in Fig. 4'''
+'''
+Author: Alvaro Braga
+email: alvaro.braga3@gmail.com
+Figure 4.py: Plot sampling for different sampling
+             frequencies 
+'''
 
 from matplotlib import pyplot as plt
 import numpy as np
