@@ -2,7 +2,7 @@
 ;email: alvaro.braga3@gmail.com
 ;relocate_stack2.s: Relocate stack pointer
 
-;Changes: line 9
+;Changes: line 13
 
 		AREA |.text|,CODE,READONLY
 		EXPORT __relocate_stack
