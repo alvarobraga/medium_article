@@ -6,7 +6,7 @@ main_print_filtered.c: Print onto
               signal values
 */
 
-// Changes: lines 20, 32, 63, 53
+// Changes: lines 28, 39, 71, 75
 
 #include <stdlib.h>
 #include <stdint.h>
