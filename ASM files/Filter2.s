@@ -4,7 +4,7 @@
 ;          the signal and store filtered
 ;          values
 
-;Changes: lines 20, 26, 81-82, 97-98, 110-111
+;Changes: lines 20, 26, 86-87, 102-103, 115-116
 
 NUM_SAMPLES EQU 2000
 
