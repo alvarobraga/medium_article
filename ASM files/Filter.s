@@ -115,13 +115,8 @@ LOOP_ZERO
 RMS_SQUARED
 		CMP           R3,R1	         ;Now we will start a loop by decrementing the counter. 
 		                                 ;Therefore we start by checking if the counter 
-<<<<<<< Updated upstream
 			                         ;is (NUM_SAMPLES - 1)	
 	BNE	NOT_FIRST_LOOP_RMS_SQUARED
-=======
-										 ;is (NUM_SAMPLES - 1)	
-		BNE			  NOT_FIRST_LOOP_RMS_SQUARED
->>>>>>> Stashed changes
 		VPOPEQ.F32    {S0}               ;Retrive y[loop counter] from stack
 		VMULEQ.F32    S0,S0,S0           ;(y[(NUM_SAMPLES - 1))^2
 		SUBEQ		  R3,R3,#1       ;Decrement loop counter
@@ -131,17 +126,10 @@ NOT_FIRST_LOOP_RMS_SQUARED
 		VPOP.F32    {S1}                 ;Retrive y[loop counter] from stack
 		VMUL.F32    S1,S1,S1             ;y[(loop counter)])^2	
 		VADD.F32    S0,S0,S1             ;(y[(NUM_SAMPLES - 1))^2 + y[(NUM_SAMPLES - 2)])^2 + ... + y[(loop counter)])^2		
-<<<<<<< Updated upstream
 		SUB	    R3,R3,#1             ;Decrement loop counter
 		CMP         R3,#-1	         ;Check if loop counter is -1
 	BGT     NOT_FIRST_LOOP_RMS_SQUARED
                 VLDREQ.F32  S1,[R6,#20]	         ;Load constant N (inverse of number of samples) into register S1
-=======
-		SUB		    R3,R3,#1             ;Decrement loop counter
-		CMP         R3,#-1	             ;Check if loop counter is -1
-		BGT         NOT_FIRST_LOOP_RMS_SQUARED
-        VLDREQ.F32  S1,[R6,#20]	         ;Load constant N (inverse of number of samples) into register S1
->>>>>>> Stashed changes
 		VMULEQ.F32  S0,S0,S1             ;SUM( (y[n])^2 ) * 1/N --- rms_squared
 		POPEQ       {R1}                 ;Retrive address of the variable rms_squared from the stack
 		VSTRHS.F32  S0,[R1]              ;Write rms squared value to variable rms_squared
