@@ -7,9 +7,7 @@
 #include "timer.h"
 
 #define DATA 0x20000000 // Define initial address for samples[2000]
-//#define DATA 0x20001F40
 #define GAIN  0x3F800000  //1
-//#define GAIN 0x3f6a3d71 //.915
 
 typedef struct
 {
@@ -33,7 +31,6 @@ extern inline void __relocate_stack(void);
 static void dma_callback(void);
 static void timer2_callback(void);
 
-//extern uint32_t current_sensor_output_signal[2000];
 
 int main()
 {
@@ -47,10 +44,8 @@ int main()
     NVIC_SetPriorityGrouping(0UL);
     Priority_t priorities;
     priorities.priority_timer2 = NVIC_EncodePriority(0UL, 0, 0);
-    // printf("%d\n\r", priorities.priority_timer2);
     NVIC_SetPriority(TIM2_IRQn, priorities.priority_timer2);
     priorities.priority_dma = NVIC_EncodePriority(0UL, 1, 0);
-    // printf("%d", priorities.priority_dma);
     NVIC_SetPriority(DMA2_Stream0_IRQn, priorities.priority_dma);
 
     while (1)
@@ -62,8 +57,6 @@ static void dma_callback(void)
     int i;
     for (i = 0; i < 2000; i++){
         Data->copy_of_samples[i] = Data->samples[i];
-	      //Data->copy_of_samples[i] = current_sensor_output_signal[i];
-	      //printf("%d\n\r", current_sensor_output_signal[i]);
 		}
 
     Filter(Data->copy_of_samples, &Data->rms_squared, &Data->gain);
